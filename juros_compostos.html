@@ -1,0 +1,89 @@
+<div class="bg">
+<table>
+    <tr>
+        <td class="titletd">Valor investido: </td>
+        <td class="tdp"><input type="text" class="uk-input" id="valor_investido"></td>
+    </tr>
+    <tr>
+        <td class="titletd">Selecionar período: </td>
+        <td class="tdp">
+            <select id="periodo" class="uk-select">
+                <option value="6">6 meses / 3%</option>
+                <option value="12">12 meses / 4%</option>
+                <option value="18">18 meses / 5%</option>
+                <option value="24">24 meses / 6%</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="tdbt">
+            <input type="button" value="Calcular Investimento" onclick="calcular()">
+        </td>
+    </tr>
+</table>
+<br>
+<div id="resultado" class="result"></div><br><br>
+<div id="coluna-esquerda" style="float:left; width: 50%; text-align: center;"></div>
+<div id="coluna-direita" style="float:right; width: 50%; text-align: center;"></div>
+</div>
+<script>
+    function calcular() {
+    var valor = document.querySelector("#valor_investido").value;
+    var meses = document.querySelector("#periodo").value;
+    var taxa = 0;
+    
+    console.log(valor);
+    
+    
+    if(meses === "6" && valor < 10000)  {
+        document.querySelector("#resultado").innerHTML = "Você não pode investir valores abaixo de R$ 10.000,00.";
+        document.querySelector("#coluna-esquerda").innerHTML = "";
+        document.querySelector("#coluna-direita").innerHTML = "";
+        return;
+    }
+    if(meses === "12" && valor < 50000)  {
+        document.querySelector("#resultado").innerHTML = "Você não pode investir valores abaixo de R$ 50.000,00.";
+        document.querySelector("#coluna-esquerda").innerHTML = "";
+        document.querySelector("#coluna-direita").innerHTML = "";
+        return;
+    }
+    if(meses === "18" && valor < 100000)  {
+        document.querySelector("#resultado").innerHTML = "Você não pode investir valores abaixo de R$ 100.000,00.";
+        document.querySelector("#coluna-esquerda").innerHTML = "";
+        document.querySelector("#coluna-direita").innerHTML = "";
+        return;
+    }
+    if(meses === "24" && valor < 500000)  {
+        document.querySelector("#resultado").innerHTML = "Você não pode investir valores abaixo de R$ 500.000,00.";
+        document.querySelector("#coluna-esquerda").innerHTML = "";
+        document.querySelector("#coluna-direita").innerHTML = "";
+        return;
+    }
+    if(meses === "6"){
+        taxa = 0.03;
+    }else if(meses === "12"){
+        taxa = 0.04;
+    }else if(meses === "18"){
+        taxa = 0.05;
+    }else if(meses === "24"){
+        taxa = 0.06;
+    }
+    var montante = valor * Math.pow(1 + taxa, meses);
+    var limite = meses / 2;
+    document.querySelector("#coluna-esquerda").innerHTML = "";
+document.querySelector("#coluna-direita").innerHTML = "";
+    for (var i = 1; i <= meses; i++) {
+        var montanteMensal = valor * Math.pow(1 + taxa, i);
+        var montanteFormatado = montanteMensal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        var montanteMensal = "Mês " + i + ": " + montanteFormatado;
+                if(i <= limite) {
+            document.querySelector("#coluna-esquerda").innerHTML += montanteMensal + "<br>";
+        } else {
+            document.querySelector("#coluna-direita").innerHTML += montanteMensal + "<br>";
+        }
+    }
+    var montanteFormatado = montante.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+document.querySelector("#resultado").innerHTML = "Montante total no final do período: " + montanteFormatado;
+
+}
+</script>
